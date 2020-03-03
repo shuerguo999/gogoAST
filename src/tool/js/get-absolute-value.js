@@ -1,0 +1,47 @@
+// 同时依赖api和build-node
+const api = require('./api')
+const { buildObjectProperty } = require('./build-node');
+const getValue = {
+    getAbsoluteValue(value, path) {
+        // 不需要完整ast，path里有路径信息，一级一级往上找
+        // 变量（作用域）、对象属性（外部引入）
+        if (value.type == 'MemberExpression') {
+            const propList = [];
+            let obj = value;
+            let t1 = null; let t2 = '$_$';
+            while (obj.type == 'MemberExpression') {
+                const prop = obj.property.name;
+                t1 = { [prop]: t2 };
+                t2 = t1;
+                obj = obj.object;
+            }
+            return findObject(path);
+            function findObject(path) {
+                const { extraDataList: e1 } = api.getAstsBySelector(path.node, `var ${obj.name} = $_$`);
+                if (e1[0] && e1[0][0]) {
+                    const { extraDataList: e2 } = api.getAstsBySelector(e1[0][0].structure, 
+                        buildObjectProperty(t1), 'nn', false)
+                    if (e2[0] && e2[0][0]) {
+                        return getValue.getAbsoluteValue(e2[0][0].structure, path.parentPath)
+                    } else return ""
+                } else {
+                    if (path.parentPath) {
+                        return findObject(path.parentPath);   
+                    } else return ""
+                }
+            }
+        } else if (value.type == 'Identifier') {
+            const name = value.name;
+            const { extraDataList } = api.getAstsBySelector(path.node, `var ${name} = $_$`);
+            if (extraDataList[0] && extraDataList[0][0]) {
+                return getValue.getAbsoluteValue(extraDataList[0][0].structure, path.parentPath);
+            } else {
+                return getValue.getAbsoluteValue(value, path.parentPath);
+            }
+        }else {
+            // 几种可能：字符串、对象、数字、数组、表达式
+            return value || 1;
+        }
+    }
+}
+module.exports = getValue;
