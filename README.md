@@ -1,33 +1,41 @@
 # GOGOAST
-别名GOGOCODE
 
-npm包：[https://www.npmjs.com/package/gogocode](https://www.npmjs.com/package/gogocode)
+npm包：[https://www.npmjs.com/package/gogocode](https://www.npmjs.com/package/gogoast)
 
 github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999/gogoAST)
 
-## 为什么你需要用GOGOCODE？
+# Install
+
+```
+    npm install gogoast
+```
+
+# 为什么你需要用gogoAST？
 - 全网最简单易上手，可读性最强的AST处理工具！
-- 如果你需要对代码升级、改造、分析，任何可以通过AST进行的处理，都可以用GOGOCODE快速解决问题。
-- 不需要traverse，像剥洋葱一样一层一层的对比操作、构造ast节点，甚至不需要理解什么是CallExpression、Identifier、ImportDeclaration
+- 大幅减少代码量——如果你需要使用AST对代码进行升级、改造、分析，快用gogoAST帮你摆脱繁琐冗余的的代码，专注于你的核心逻辑。不需要traverse，像剥洋葱一样一层一层的对比、操作、构造ast节点，
+- 降低理解成本——甚至不需要理解什么是CallExpression、Identifier、ImportDeclaration这些概念，就可以畅快运用AST。
+- 基于recast，转换后的代码基本与源代码的格式差异最小
 
-## 基于：
-- recast，我不想让代码格式有太多变化
-- babel-parse，紧跟最新规范，支持各种语法
-- hyntax，小而精致
+# gogoAST与主流AST工具之对比
 
-## 对比Babel插件 jscodeshift工具的使用：
-- 例1: 处理程序中的console.log
+目前，自定义babel插件和jscodeshift是有代表性的AST工具，通过下面两个例子可以看出gogoAST的代码可读性和简洁的优势。
 
+- 示例1: 与自定义babel插件对比
+
+    对于下面这段js代码
+    
     ```javascript
-    // input
     import a from 'a';
     console.log('get A')
     var b = console.log()
     console.log.bind()
     var c = console.log
     console.log = func
-
-    // output
+    ```
+    
+    假如我们希望对不同的console.log做不同的处理，变成下面这样
+    
+    ```
     import a from 'a';
     var b = void 0;
     console.log.bind()
@@ -35,7 +43,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     console.log = func
     ```
 
-    - Babel插件的核心代码：
+    - 用自定义Babel插件实现的核心代码：
 
     ```javascript
     // 代码来源：https://zhuanlan.zhihu.com/p/32189701
@@ -85,7 +93,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
 
     ```
 
-    - 使用gogocode：
+    - 用gogoAST实现：
 
     ```javascript
     const AST = GG.createAstObj(code);
@@ -96,22 +104,26 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     ```
 
 
-- 例2: 用对象类型的入参替换独立入参
+- 示例2: 与jscodeshift对比
 
+    对于下面这段代码：
+    
     ```javascript
-    // input
     import car from 'car';
 
     const suv = car.factory('white', 'Kia', 'Sorento', 2010, 50000, null, true);
     const truck = car.factory('silver', 'Toyota', 'Tacoma', 2006, 100000, true, true);
+    ```
+    
+    假如我们希望将函数的多个入参封装为一个对象传入，变成下面这样
 
-    // output
+    ```javascript
     import car from 'car';
     const suv = car.factory({"color":"white","make":"Kia","model":"Sorento","year":2010,"miles":50000,"bedliner":null,"alarm":true});
     const truck = car.factory({"color":"silver","make":"Toyota","model":"Tacoma","year":2006,"miles":100000,"bedliner":true,"alarm":true});
     ```
 
-    - 使用jscodeshift处理的核心代码：
+    - 用jscodeshift实现的核心代码：
 
     ``` javascript
     // 代码来源：https://www.toptal.com/javascript/write-code-to-rewrite-your-code
@@ -183,7 +195,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     };
     ```
 
-    - 使用gogocode：
+    - 用gogoAST实现：
 
     ``` javascript
     const AST = GG.createAstObj(code);
@@ -202,18 +214,19 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     const result = AST.generate();
     ```
 
-## API
-陆续补充
+# API
+陆续补充中
 
 1. 创建一个实例：createAstObj
 
     ```javascript
-    const GG = require('gogocode');
+    const GG = require('gogoast');
     const AST = GG.createAstObj(p, options);    
     // options非必传，格式同babel-parse,如 { allowImportExportEverywhere: true, plugins: ['jsx'] }
     ```
+    
 2. 通过选择器查找AST节点：getAstsBySelector
-    - 选择器其实就是一段包含通配符（$_$）的代码
+    - 选择器是一段包含通配符（$_$）的代码
     - pathList：返回找到的ast节点路径，包含自己节点、父节点等信息
     - extraDataList：返回通配符$_$代表的节点信息，其中structure是节点完整信息，value是简略信息
 
@@ -226,7 +239,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     ```
 
 3. 通过选择器替换另一个选择器查找到的AST节点：replaceSelBySel
-    - 就像'abcd'.replace('a', 'b')一样好用
+    - 就像'abcd'.replace('a', 'z')一样好用
 
     ```javascript
     AST.replaceSelBySel('const $_$ = require($_$)', 'import $_$ from $_$');
@@ -240,7 +253,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     ```javascript
     const type = 'error';
     const content = ASTNODE; // 从其他代码中提取出来或者自己构造的ast节点
-    AST.buildAstByAstStr(`
+    GG.buildAstByAstStr(`
         Alert.show({
             type: '${type}',
             content: '$_$content$_$'
@@ -262,7 +275,7 @@ github：[https://github.com/shuerguo999/gogoAST](https://github.com/shuerguo999
     - insertAstListAfter
     - removeAst
     - ......
-    - AST实例上也有部分方法，用法比GG模块调用少传第一个参数
+    - AST实例上也有部分方法，用法相比GG模块调用少传第一个参数，实际传入的是该实例自身的ast结构
 
 6. 特殊类型AST节点的构造方法
     - buildObjectProperty
