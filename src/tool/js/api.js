@@ -104,9 +104,10 @@ const api = {
     replaceStrByAst(ast, astPatialMap = {}) {
         for (let key in astPatialMap) {
             const valueAst = astPatialMap[key];
-            // console.log(valueAst.node)
-            const keyAst = getSelector(`'$_$${key}$_$'`);
-            const { pathList } = find.call(ast, 'StringLiteral', keyAst.structure, 'nn');
+            const { pathList } = api.getAstsBySelector(ast, [
+                { type: 'Identifier', name: `$_$${key}$_$` },
+                { type: 'StringLiteral', value: `$_$${key}$_$` }
+            ]);
             if (pathList.length > 0) {
                 pathList[0].replace(valueAst)
             }
@@ -116,9 +117,9 @@ const api = {
     replaceAstByAst(oldAst, newAst) {
         oldAst.replace(newAst)
     },
-    replaceSelBySel(ast, selector, replacer) {
+    replaceSelBySel(ast, selector, replacer, strictSequence = true) {
         // 用于结构不一致的，整体替换
-        const { pathList, extraDataList } = api.getAstsBySelector(ast, selector, 'nn', true);
+        const { pathList, extraDataList } = api.getAstsBySelector(ast, selector, 'nn', strictSequence);
         pathList.forEach((path, i) => {
             const extra = extraDataList[i];
             if (extra.length > 0) {
@@ -127,11 +128,19 @@ const api = {
                     newReplacer = newReplacer.replace('$_$', generate(v.structure));
                         // 通过选择器替换ast，返回完整ast
                 });
-                let replacerAst = api.buildAstByAstStr(newReplacer);
-                path && path.replace(replacerAst);
+                if (!replacer) {
+                    path.replace(null);
+                } else {
+                    let replacerAst = api.buildAstByAstStr(newReplacer);
+                    path && path.replace(replacerAst);
+                }
             } else {
-                let replacerAst = replacer.type ? replacer : api.buildAstByAstStr(replacer);
-                path && path.replace(replacerAst);
+                if (!replacer) {
+                    path.replace(null);
+                } else {
+                    let replacerAst = replacer.type ? replacer : api.buildAstByAstStr(replacer);
+                    path && path.replace(replacerAst);
+                }
             }
         });
     },
