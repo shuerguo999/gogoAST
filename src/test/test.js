@@ -6,15 +6,15 @@ const GG = require('../../main');
 const code = `
     const g = 'Hello World';
 `
-const G = GG.createAstObj(code);
-const { pathList, extraDataList } = G.getAstsBySelector(`const $_$ = $_$`);
+const AST = GG.createAstObj(code);
+const { pathList, extraDataList } = AST.getAstsBySelector(`const $_$ = $_$`);
 console.log(pathList, extraDataList);
 
-G.replaceSelBySel(`const $_$ = $_$`, `const join = function () {
+AST.replaceSelBySel(`const $_$ = $_$`, `const join = function () {
     return $_$ + $_$
 }`);
 
-console.log(G.generate());
+console.log(AST.generate());
 
 const newAst = GG.buildAstByAstStr(`
     function g () {
@@ -26,4 +26,4 @@ const newAst = GG.buildAstByAstStr(`
     body: pathList[0].node
 })
 
-console.log(newAst.generate())
+console.log(GG.generate(newAst))
