@@ -218,6 +218,15 @@ const api = {
                 path.replace(null)
             }
         });
+    },
+    appendJsxAttr(ast, obj) {
+        const attrs = [];
+        for (let o in obj) {
+            attrs.push(`${o}=${obj[o]}`.replace(/'\$'/g, "$"));
+        }
+        const jsxPartial = buildAstByAstStr(`<div ${attrs.join(' ')}></div>`);
+        const newAttrs = jsxPartial.expression.openingElement.attributes;
+        ast.value.openingElement.attributes = ast.value.openingElement.attributes.concat(newAttrs);
     }
 }
 
