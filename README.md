@@ -51,7 +51,7 @@ const AST = GG.createAstObj(code);
 -- |-- | :--: 
 描述|代码选择器匹配到的代码片段 | 代码选择器中通配符匹配到的代码片段
 结构|nodePath[]|{ stucture: node, value: simpleNode }[]
-解释|nodePath对象包含匹配到的ast结构及其上下文![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/zhifu.wzf/weekreporter/8ef95dab9446d420252e2b1a60ae600f/image.png)| structure中的node是ast结构，value是简化后的node，便于取值![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/zhifu.wzf/weekreporter/e0416e8d928d66dc3010e583c74bc5d5/image.png)
+解释|nodePath对象包含匹配到的ast结构及其上下文| structure中的node是ast结构，value是简化后的node，便于取值
 
 
 
