@@ -1,7 +1,7 @@
-const parse = require('./src/tool/js/parse');
-const generate = require('./src/tool/js/generate');
-const api = require('./src/tool/js/api');
-const build = require('./src/tool/js/build-node');
+const parse = require('./lib/parse');
+const generate = require('./lib/generate');
+const api = require('./lib/api');
+const build = require('./lib/build-node');
 class Ast {
     constructor(code, options) {
         if (typeof code == 'string') {
@@ -14,22 +14,22 @@ class Ast {
         return generate(this.ast);
     }
     getAstsBySelector() {
-        return api.getAstsBySelector.call(this, this.ast, ...arguments);
+        return api.getAstsBySelector.call(this, this.ast, ...Array.from(arguments));
     }
     replaceStrByAst() {
-        return api.replaceStrByAst.call(this, this.ast, ...arguments);
+        return api.replaceStrByAst.call(this, this.ast, ...Array.from(arguments));
     }  
     replaceSelBySel() {
-        return api.replaceSelBySel.call(this, this.ast, ...arguments);
+        return api.replaceSelBySel.call(this, this.ast, ...Array.from(arguments));
     }
     modifySelBySel() {
-        return api.modifySelBySel.call(this, this.ast, ...arguments);
+        return api.modifySelBySel.call(this, this.ast, ...Array.from(arguments));
     }
     removeAst() {
-        return api.removeAst.call(this, this.ast, ...arguments);
+        return api.removeAst.call(this, this.ast, ...Array.from(arguments));
     }
     appendJsxAttr() {
-        return api.appendJsxAttr.call(this, this.ast, ...arguments);
+        return api.appendJsxAttr.call(this, this.ast, ...Array.from(arguments));
     }
 }
 const main = {

@@ -1,16 +1,69 @@
 # GOGOAST
+
+![](https://img.alicdn.com/tfs/TB17V2NvHj1gK0jSZFuXXcrHpXa-256-256.png)
+
 全网最简单易上手，可读性最强的AST处理工具！
 
 # Install
-
+- node包安装
 ```
     npm install gogoast
 ```
+- 浏览器执行
+    - commonjs引入gogoast.js
 
 # 为什么你需要用gogoAST？
-- 大幅减少代码量——如果你需要使用AST对代码进行升级、改造、分析，快用gogoAST帮你摆脱繁琐冗余的的代码，专注于你的核心逻辑。不需要traverse，像剥洋葱一样一层一层的对比、操作、构造ast节点，
+- 大幅减少代码量——如果你需要使用AST对代码进行升级、改造、分析，快用gogoAST帮你摆脱繁琐冗余的的代码，专注于你的核心逻辑。不需要traverse，像剥洋葱一样一层一层的对比、操作、构造ast节点。
 - 降低理解成本——甚至不需要理解什么是CallExpression、Identifier、ImportDeclaration这些概念，就可以畅快运用AST。
-- 基于recast，转换后的代码基本与源代码的格式差异最小
+- 基于recast，转换后的代码基本与源代码的格式差异最小。
+- 凡是需要借助babel、recast、jscodeshift、esprima...完成的需求，gogoast都能帮你更快更简单的完成。
+
+# 快速开始
+- 创建一个AST对象
+``` javascript
+const code = `some code`
+const GG = require('gogoast');
+const AST = GG.createAstObj(code);
+```
+
+- 查找代码片段
+用一段包含通配符（$_$）的'代码选择器'来查找相应的代码片段，如：
+
+    - 查找代码中所有的变量
+    
+        ``` javascript
+        const { matchWildCardList } = AST.getAstsBySelector(`$_$`);
+        ```
+    - 查找代码中所有的字符串
+    
+        ``` javascript
+        const { matchWildCardList } = AST.getAstsBySelector(`'$_$'`);
+        ```
+    - 查找某些函数的调用
+        ``` javascript
+        const { nodePathList, matchWildCardList } = AST.getAstsBySelector([
+            '$_$.setTip($_$, $_$)',
+            'tip.show($_$)'
+        ]);
+        ```
+
+返回结果 |nodePathList | matchWildCardList|
+-- |-- | :--: 
+描述|代码选择器匹配到的代码片段 | 代码选择器中通配符匹配到的代码片段
+结构|nodePath[]|{ stucture: node, value: simpleNode }[]
+解释|nodePath对象包含匹配到的ast结构及其上下文![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/zhifu.wzf/weekreporter/8ef95dab9446d420252e2b1a60ae600f/image.png)| structure中的node是ast结构，value是简化后的node，便于取值![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/zhifu.wzf/weekreporter/e0416e8d928d66dc3010e583c74bc5d5/image.png)
+
+
+
+- 替换一段代码
+1. 在完整的AST片段中，通过param1查找对应的代码片段
+2. 通过param2生成一段代码，填入param1中通配符对应的代码
+3. 将param2生成的代码替换param1匹配的代码
+```javascript
+    AST.replaceSelBySel(param1, param2);
+    AST.replaceSelBySel('const $_$ = require($_$)', 'import $_$ from $_$');
+```
+
 
 # gogoAST与主流AST工具之对比
 
@@ -196,9 +249,9 @@
     ``` javascript
     const AST = GG.createAstObj(code);
     const argKeys = ['color', 'make', 'model', 'year', 'miles', 'bedliner', 'alarm' ];
-    const { pathList, extraDataList } = AST.getAstsBySelector(`const $_$ = car.factory($_$)`, 'nn', false);
-    pathList.forEach((path, i) => {
-        const extra = extraDataList[i];
+    const { nodePathList, matchWildCardList } = AST.getAstsBySelector(`const $_$ = car.factory($_$)`, 'nn', false);
+    nodePathList.forEach((path, i) => {
+        const extra = matchWildCardList[i];
         const variableName = extra.shift().value;
         const obj = {};
         extra.forEach((ext, ei) => {
@@ -223,11 +276,11 @@
     
 2. 通过选择器查找AST节点：getAstsBySelector
     - 选择器是一段包含通配符（$_$）的代码
-    - pathList：返回找到的ast节点路径，包含自己节点、父节点等信息
-    - extraDataList：返回通配符$_$代表的节点信息，其中structure是节点完整信息，value是简略信息
+    - nodePathList：返回找到的ast节点路径，包含自己节点、父节点等信息
+    - matchWildCardList：返回通配符$_$代表的节点信息，其中structure是节点完整信息，value是简略信息
 
     ```javascript
-    const { pathList, extraDataList } = AST.getAstsBySelector([
+    const { nodePathList, matchWildCardList } = AST.getAstsBySelector([
         '$_$.setTip($_$, $_$)',
         'tip.show($_$)'
     ]);
