@@ -47,11 +47,13 @@ const AST = GG.createAstObj(code);
         ]);
         ```
     - 选择器示例：
-        - var $_$ = $_$
-        - function $_$ () { $_$ }
-        - View.extend($_$)
-        - $_$ ? $_$ : $_$
-        - $_$ && $_$
+        ``` javascript
+        var $_$ = $_$
+        function $_$ () { $_$ }
+        View.extend($_$)
+        $_$ ? $_$ : $_$
+        $_$ && $_$
+        ```
         
 返回结果 |nodePathList | matchWildCardList|
 -- |-- | :--: 
