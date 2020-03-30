@@ -10,7 +10,7 @@
     npm install gogoast
 ```
 - 浏览器执行
-    - commonjs引入gogoast.js
+    > commonjs引入gogoast.js
 
 # 为什么你需要用gogoAST？
 - 大幅减少代码量——如果你需要使用AST对代码进行升级、改造、分析，快用gogoAST帮你摆脱繁琐冗余的的代码，专注于你的核心逻辑。不需要traverse，像剥洋葱一样一层一层的对比、操作、构造ast节点。
@@ -46,7 +46,15 @@ const AST = GG.createAstObj(code);
             'tip.show($_$)'
         ]);
         ```
-
+    - 选择器示例：
+        ``` javascript
+        var $_$ = $_$
+        function $_$ () { $_$ }
+        View.extend($_$)
+        $_$ ? $_$ : $_$
+        $_$ && $_$
+        ```
+        
 返回结果 |nodePathList | matchWildCardList|
 -- |-- | :--: 
 描述|代码选择器匹配到的代码片段 | 代码选择器中通配符匹配到的代码片段
