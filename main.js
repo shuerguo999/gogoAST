@@ -31,6 +31,9 @@ class Ast {
     appendJsxAttr() {
         return api.appendJsxAttr.call(this, this.ast, ...Array.from(arguments));
     }
+    visit() {
+        return api.visit.call(this, this.ast, ...Array.from(arguments));
+    }
 }
 const main = {
     createAstObj: (code, options) => {
