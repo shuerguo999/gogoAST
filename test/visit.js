@@ -30,3 +30,6 @@ ast.visit({
         return false;
     }
 });
+ast.traverse(node => {
+    console.log(node);
+})

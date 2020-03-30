@@ -34,6 +34,9 @@ class Ast {
     visit() {
         return api.visit.call(this, this.ast, ...Array.from(arguments));
     }
+    traverse() {
+        return api.traverse.call(this, this.ast, ...Array.from(arguments));
+    }
 }
 const main = {
     createAstObj: (code, options) => {
