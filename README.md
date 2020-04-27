@@ -361,3 +361,20 @@ const AST = GG.createAstObj(code);
     <div attr1={`gostr=${gostr};locaid=d98s8dh3;a=${aa}&b=${{aaa:"222",xxx{ssss:111}}}&c=${"s"}&d=${a+1}&e=${ ss?2:1}}`}a={a+1} b='a' c={a}>
     </div>
     ```
+
+# 使用示例（陆续补充）
+1. 将一段代码最外层所有未export的变量定义都加上export
+``` javascript
+const GG = require('gogoast');
+
+const AST = GG.createAstObj(code);     // code是源代码字符串
+
+const { nodePathList } = AST.getAstsBySelector(`const $_$ = $_$`, true, 'n');   // 匹配到最外层的变量定义
+nodePathList.forEach(n => {
+    if (n.parent.parent.node.type == 'ExportNamedDeclaration') {    // declarator类型的节点肯定至少存在两级parent，不会报错
+        return;     // 已经export的不处理
+    }
+    GG.replaceAstByAst(n.parent, { type: 'ExportNamedDeclaration', declaration: n.parent.value})
+})
+console.log(AST.generate())     // 输出代码
+```
