@@ -2,6 +2,8 @@ const parse = require('./lib/parse');
 const generate = require('./lib/generate');
 const api = require('./lib/api');
 const build = require('./lib/build-node');
+const runJsPlugin = require('./lib/run-js-plugin');
+const runHtmlPlugin = require('./lib/run-html-plugin');
 class Ast {
     constructor(code, options) {
         if (typeof code == 'string') {
@@ -45,6 +47,12 @@ const main = {
     },
     generate(ast) {
         return generate(ast);
+    },
+    runJsPlugin({ pluginDir, codeList }) {
+        return runJsPlugin(this, { pluginDir, codeList })
+    },
+    runHtmlPlugin({ pluginDir, codeList }) {
+        return runHtmlPlugin(this, { pluginDir, codeList })
     },
     ...api,
     ...build

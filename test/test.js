@@ -12,7 +12,7 @@ const code = `
     }
     
 `
-const AST = GG.createAstObj(code);
+var AST = GG.createAstObj(code);
 
 const { nodePathList } = AST.getAstsBySelector(`const $_$ = $_$`, true, 'n');
 nodePathList.forEach(n => {
