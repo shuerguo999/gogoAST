@@ -1,7 +1,7 @@
 const G = require('../../../main')
 module.exports = {
     dep: [],
-    go(ast) {
-        ast.replaceSelBySel(`var $_$ = $_$`, `let $_$ = $_$`)
+    go(ast, { filePath }) {
+        // ast.replaceSelBySel(`var $_$ = $_$`, `let $_$ = $_$`)
     }
 }
