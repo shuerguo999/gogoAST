@@ -2,7 +2,7 @@ const G = require('gogoast')
 module.exports = {
     // dep: ['test/plugin/js/ruleB.js'],
     dep: [],
-    go(ast) {
+    go(ast, filePath) {
         // ast.replaceSelBySel(`let $_$ = $_$`, `const $_$ = $_$`)
         // const { nodePathList, matchWildCardList } = ast.getAstsBySelector(`Component({
             
