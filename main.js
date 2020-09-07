@@ -48,11 +48,11 @@ const main = {
     generate(ast) {
         return generate(ast);
     },
-    runJsPlugin({ pluginDir, codeList }) {
-        return runJsPlugin(this, { pluginDir, codeList })
+    runJsPlugin(args) {
+        return runJsPlugin(this, args)
     },
-    runHtmlPlugin({ pluginDir, codeList }) {
-        return runHtmlPlugin(this, { pluginDir, codeList })
+    runHtmlPlugin(args) {
+        return runHtmlPlugin(this, args)
     },
     ...api,
     ...build
