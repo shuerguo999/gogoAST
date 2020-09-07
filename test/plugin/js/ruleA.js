@@ -3,6 +3,7 @@ module.exports = {
     // dep: ['test/plugin/js/ruleB.js'],
     dep: [],
     go(ast, filePath) {
+        ast.removeAst(`console.log($_$)`);
         // ast.replaceSelBySel(`let $_$ = $_$`, `const $_$ = $_$`)
         // const { nodePathList } = ast.getAstsBySelector(`Component({
             

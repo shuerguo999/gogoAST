@@ -35,12 +35,12 @@
 const G = require('gogoast');
 G.runJsPlugin({
     pluginDir: 'test/plugin/js',
-    codeList: [`var a = {
-        b: calc
-    };`,
+    codeList: [
     `export default function calculateData(a, b){
-        c
-        d
+        console.log(11);
+    };`,
+    `var a = {
+        b: calc
     };`]
 }).then(res => {
     console.log(res)
