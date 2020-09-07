@@ -7,7 +7,8 @@ G.runHtmlPlugin({
     <block a:else><image class="picture-image" src="{{src}}" lazy-load="{{lazyload}}"></image></block>
   </view><!-- <image -->
   `],
-    deleteComment: true
+    deleteComment: true,
+    outputFile: false
 }).then(res => {
     console.log(res)
 })
