@@ -36,6 +36,7 @@ const G = require('gogoast');
 G.runJsPlugin({
     pluginDir: 'test/plugin/js',
     codeList: [
+    `Component({})`,
     `export default function calculateData(a, b){
         console.log(11);
     };`,

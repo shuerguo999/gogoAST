@@ -4,6 +4,7 @@ module.exports = {
     dep: [],
     go(ast, filePath) {
         ast.removeAst(`console.log($_$)`);
+        ast.replaceSelBySel(`Component`, `module.exports = Magix.View.extend`);
         // ast.replaceSelBySel(`let $_$ = $_$`, `const $_$ = $_$`)
         // const { nodePathList } = ast.getAstsBySelector(`Component({
             
