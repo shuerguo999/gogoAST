@@ -3,8 +3,10 @@ module.exports = {
     // dep: ['test/plugin/js/ruleB.js'],
     dep: [],
     go(ast, filePath) {
+        const { pathList, matchWildCardList } =              ast.getAstsBySelector(`function $_$(){}`)
         ast.removeAst(`console.log($_$)`);
         ast.replaceSelBySel(`Component`, `module.exports = Magix.View.extend`);
+        ast.replaceSelBySel(`navigateToOutside({url: $_$})`, `jm.attachUrlParams($_$)`, false)
         // ast.replaceSelBySel(`let $_$ = $_$`, `const $_$ = $_$`)
         // const { nodePathList } = ast.getAstsBySelector(`Component({
             

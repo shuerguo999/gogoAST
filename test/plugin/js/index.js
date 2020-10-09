@@ -36,7 +36,15 @@ const G = require('gogoast');
 G.runJsPlugin({
     pluginDir: 'test/plugin/js',
     codeList: [
-    `Component({})`,
+    `function a(a){
+        var b = 1
+        aaaas
+    }`,
+    `navigateToOutside({
+        spmc: this.el.attr('data-spm'),
+        spmd: 'd_link',
+        url: this.options.link
+      });`,
     `export default function calculateData(a, b){
         console.log(11);
     };`,
