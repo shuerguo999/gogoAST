@@ -37,8 +37,10 @@
   "license": "ISC",
   "dependencies": {
     "@babel/parser": "^7.7.7",
-    "glob": "^7.1.6",
     "hyntax-yx": "^0.0.1",
     "recast": "^0.18.5"
+  },
+  "devDependencies": {
+    "glob": "^7.1.6"
   }
 }

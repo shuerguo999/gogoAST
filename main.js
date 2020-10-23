@@ -11,6 +11,7 @@ class Ast {
         } else {
             this.ast = code;
         }
+        this.parseOptions = options
     }
     generate() {
         return generate(this.ast);
