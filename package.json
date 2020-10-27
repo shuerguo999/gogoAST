@@ -1,6 +1,6 @@
 {
   "name": "gogoast",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "The simplest tool to parse/transform/generate code by ast",
   "keywords": [
     "gogocode",
