@@ -1,9 +1,9 @@
-const code = ``
-const GG = require('../../../main.js');
+const code = `var a = 1`
+const GG = require('../../../main-old.js');
 const AST = GG.createAstObj(code, { plugins: ['jsx']});
 
 // const { nodePathList, matchWildCardList } = AST.getAstsBySelector('export const $_$: IRouterMap = { }')
-const asts = AST.getAstsBySelector('export interface IModels { $_$ }')
+const asts = AST.getAstsBySelector('var $_$ = 1')
 var a 
 
 
